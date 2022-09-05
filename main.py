@@ -78,7 +78,7 @@ async def change_prefix(ctx, prefix):
 
 @bot.command()
 async def search(ctx):
-    val = input("Enter what amazon product you are looking for: ")
+    await ctx.send("What amazon item are you looking for?")
     template = ("https://amazon.com/s?k={}&ref=nb_sb_noss_1")
     template.replace(" ", "+")
     return template.format()
