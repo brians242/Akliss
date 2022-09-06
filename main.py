@@ -118,6 +118,6 @@ async def help(ctx):
             
     await ctx.send(msg)
 
-bot.run("MTAxNjI3MDQ2MDc1NDg1Mzk2OQ.G4E5E7.Qu-DtpsRgOY3obPqOq1r23s-yIpkXjeP_0U6vE")
+bot.run("token")
 
 # Token =
