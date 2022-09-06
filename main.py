@@ -1,4 +1,3 @@
-from itertools import count
 import discord
 from discord.ext import commands
 import random
@@ -6,7 +5,6 @@ from bs4 import BeautifulSoup
 import csv
 from selenium import webdriver
 import json
-import datetime
 
 
 """
@@ -77,7 +75,7 @@ async def change_prefix(ctx, prefix):
         json.dump(prefixes, i, indent = 4)
 
 @bot.command()
-async def search(ctx):
+async def amazon_search(ctx):
     await ctx.send("What amazon item are you looking for?")
     template = ("https://amazon.com/s?k={}&ref=nb_sb_noss_1")
     template.replace(" ", "+")
@@ -116,10 +114,10 @@ async def roll(ctx, dice):
 
 @bot.command()
 async def help(ctx):
-    msg = "```amazon_searcher: the main function of the bot, takes your search result and your values for how important 4 categories are to find the best option for you. \nhelp: returns all of the commands and what they do. \nchange_prefix: changes the prefix to use the bot with. \nping: returns the ping to the server. \nusage: returns how many times you've used any bot commands (including help and usage). \nusage_reset: resets the usage command. \nroll: rolls a NdN dice and gives a random roll result.```"
+    msg = "```amazon_search: the main function of the bot, takes your search result and your values for how important 4 categories are to find the best option for you. \nhelp: returns all of the commands and what they do. \nchange_prefix: changes the prefix to use the bot with. \nping: returns the ping to the server. \nusage: returns how many times you've used any bot commands (including help and usage). \nusage_reset: resets the usage command. \nroll: rolls a NdN dice and gives a random roll result.```"
             
     await ctx.send(msg)
 
-bot.run("token")
+bot.run("MTAxNjI3MDQ2MDc1NDg1Mzk2OQ.G4E5E7.Qu-DtpsRgOY3obPqOq1r23s-yIpkXjeP_0U6vE")
 
-# Token = 
+# Token =
