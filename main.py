@@ -1,32 +1,18 @@
 import discord
 from discord.ext import commands
 import random
-from bs4 import BeautifulSoup
-import csv
-from selenium import webdriver
 import json
+import cv2 as cv
+import os
 
-
-"""
-
-val = input("Enter what amazon product you are looking for: ")
-
-def get_url(search):
-    template = ("https://amazon.com/s?k={}&ref=nb_sb_noss_1")
-    search = search.replace(" ", "+")   
-    return template.format(search)
-
-url = get_url(val)
-print(url)
-
-"""
-
-
-description = "A bot mainly focused on amazon_searches with a few extra tools."
+# Not completed 
+description = "A bot that aims to use take a video and send images back with OpenCV and basic commands."
 intents = discord.Intents.default()
 intents.members = True
 intents.message_content = True
 counter = 0
+file_type = ""
+frame_limit = []
 
 def get_prefix(bot, message):
     global counter
@@ -65,6 +51,13 @@ async def on_guild_remove(guild):
         json.dump(prefixes, i, indent = 4)
 
 @bot.command()
+async def check_prefix(ctx):
+    with open("prefixes.json", "r") as i:
+        prefixes = json.load(i)
+    
+    await ctx.send(f"your current prefix is {prefixes[str(ctx.guild.id)]}")
+
+@bot.command()
 async def change_prefix(ctx, prefix):
     with open("prefixes.json", "r") as i:
         prefixes = json.load(i)
@@ -73,18 +66,89 @@ async def change_prefix(ctx, prefix):
     
     with open("prefixes.json", "w") as i:
         json.dump(prefixes, i, indent = 4)
+    await ctx.send(f"your current server prefix is: {prefix}")
 
 @bot.command()
-async def amazon_search(ctx):
-    await ctx.send("What amazon item are you looking for?")
-    template = ("https://amazon.com/s?k={}&ref=nb_sb_noss_1")
-    template.replace(" ", "+")
-    return template.format()
-    
+async def filetype_reset(ctx):
+    global file_type
+    await ctx.send(f"Your file type: {file_type}, has now been reset!")
+    file_type = ""
 
+@bot.command()
+async def frame(ctx):
+    
+    global frame_limit
+    """await ctx.send("Choose how many frames of video you want to create!")
+    
+    def get(limit):
+        return limit.author == ctx.author and limit.channel == ctx.channel and limit.content.lower() in frame_limit
+    
+    frame_limit = await bot.wait_for("limit", get = get)
+
+    """
+    # above trying to get how many frames the user wants
+    
+    await ctx.send("Pick jpg or png for what files your frames will be saved as!")
+    
+    def check(message):
+        return message.author == ctx.author and message.channel == ctx.channel and message.content.lower() in ["jpg", "png"]
+    
+    global file_type
+    
+    filetype = await bot.wait_for("message", check = check)
+    
+    global x_file_type
+    
+    if filetype.content.lower() == "jpg":
+        await ctx.send("Your frame(s) will be saved as a jpg(s)!")
+        x_file_type = str(file_type)
+    elif filetype.content.lower() == "png":
+        await ctx.send("Your frame(s) will be saved as a png(s)")
+        x_file_type = str(file_type)
+    else:
+        await ctx.send("Sorry! At this time this filetype isn't supported.")
+    
+    cap = cv.VideoCapture("path")
+    
+    try:
+
+    # creating a folder named frames to store the frames of our video
+        if not os.path.exists("frames"):
+            os.mkdir("frames")
+        else:
+            return
+
+    # if not created then raise error
+    except OSError:
+        await ctx.send("You failed to create a folder to contain the frames")
+    
+    curr_frame = 0
+    #will later make this user modifiable
+    
+    while (True):
+        ret, frame = cap.read
+        
+        if ret and curr_frame < {frame_limit}:
+            name = "./frames/frame_" + str(curr_frame) + (f".{x_file_type}")
+            
+            cv.imwrite(name, frame)
+            
+            curr_frame += 1
+        else:
+            break
+    i_file = []
+    
+    """while (True):
+        for i in os.listdir("path"):
+            if i.endswith(".jpg") or i.endswith("png"):
+                i_file.append(i)
+        for i in i_file:
+            await ctx.send(file = discord.File(i))"""
+            # above trying to send a folder
+    
 @bot.command()
 async def ping(ctx):
-    await ctx.send(f"Pong! {round (bot.latency * 1000)} ms")
+    await ctx.send(f"Pong! Latency is {round (bot.latency * 1000)} ms")
 
 @bot.command()
 async def usage(ctx):
@@ -108,16 +172,28 @@ async def roll(ctx, dice):
     except Exception:
         await ctx.send("format has to be in NdN!")
         return
+        
     
     result = ", ".join(str(random.randint(1, limit)) for i in range(rolls))
     await ctx.send(result)
 
 @bot.command()
 async def help(ctx):
-    msg = "```amazon_search: the main function of the bot, takes your search result and your values for how important 4 categories are to find the best option for you. \nhelp: returns all of the commands and what they do. \nchange_prefix: changes the prefix to use the bot with. \nping: returns the ping to the server. \nusage: returns how many times you've used any bot commands (including help and usage). \nusage_reset: resets the usage command. \nroll: rolls a NdN dice and gives a random roll result.```"
-            
-    await ctx.send(msg)
-
+    embed = discord.Embed(
+        title = "Help",
+        description = "These are all the commands that this bot has: \n\nframe: the main function of the bot, takes your video and makes splits it into frames and gives you all the frames back. \n\nhelp: returns all of the commands and what they do. \n\ncheck_prefix: checks the prefix value (default should be ;), you've found it when it responds with: your current prefix is (your prefix. \n\nchange_prefix: changes the prefix to use the bot with. \n\nping: returns the ping to the server. \n\nusage: returns how many times you've used any bot commands (including help and usage). \n\nusage_reset: resets the usage command. \n\nroll: rolls a NdN dice and gives a random roll result.",
+        color = discord.Color.blue()     
+    )
+    embed.set_image(url="https://echamicrobiology.com/app/uploads/2016/05/question-mark-character.jpg")
+    embed.set_footer(text = "If you have additional questions, create an issue in the github repo")
+    
+    embed.set_author(
+        name = "Karatumn",
+        icon_url = "https://cdn.discordapp.com/avatars/312997978639958026/99ec2a8e69c5a8ba7f0ea85efe88bb57.webp?size=240",
+    )
+    
+    await ctx.send(embed=embed)
+    
 bot.run("token")
 
 # Token =
