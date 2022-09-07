@@ -123,7 +123,7 @@ async def frame(ctx):
     #will later make this user modifiable
     
     while (True):
-        ret, frame = cap.read
+        ret, frame = cap.read #Non-iterable, object fix this later
         
         if ret and curr_frame < {frame_limit}:
             name = "./frames/frame_" + str(curr_frame) + (f".{x_file_type}")
@@ -133,15 +133,23 @@ async def frame(ctx):
             curr_frame += 1
         else:
             break
+    
+    await ctx.send("Your frames have been processed!")
+    
     i_file = []
     
-    """while (True):
+    """
+    while (True):
         for i in os.listdir("path"):
             if i.endswith(".jpg") or i.endswith("png"):
                 i_file.append(i)
         for i in i_file:
-            await ctx.send(file = discord.File(i))"""
+            await ctx.send(file = discord.File(i))
+    
+    await ctx.send("Your frames were sent!")
+    """
             # above trying to send a folder
+    
     
 @bot.command()
 async def ping(ctx):
@@ -178,7 +186,7 @@ async def roll(ctx, dice):
 async def help(ctx):
     embed = discord.Embed(
         title = "Help",
-        description = "These are all the commands that this bot has: \n\nframe: the main function of the bot, takes your video and makes splits it into frames and gives you all the frames back. \n\nhelp: returns all of the commands and what they do. \n\ncheck_prefix: checks the prefix value (default should be ;), you've found it when it responds with: your current prefix is (your prefix. \n\nchange_prefix: changes the prefix to use the bot with. \n\nping: returns the ping to the server. \n\nusage: returns how many times you've used any bot commands (including help and usage). \n\nusage_reset: resets the usage command. \n\nroll: rolls a NdN dice and gives a random roll result.",
+        description = "These are all the commands that this bot has: \n\nframe: the main function of the bot, takes your video and splits it into frames and gives you all the frames back. \n\nhelp: returns all of the commands and what they do. \n\ncheck_prefix: checks the prefix value (default should be ;), you've found it when it responds with: your current prefix is (your prefix. \n\nchange_prefix: changes the prefix to use the bot with. \n\nping: returns the ping to the server. \n\nusage: returns how many times you've used any bot commands (including help and usage). \n\nusage_reset: resets the usage command. \n\nroll: rolls a NdN dice and gives a random roll result.",
         color = discord.Color.blue()     
     )
     embed.set_image(url="https://echamicrobiology.com/app/uploads/2016/05/question-mark-character.jpg")
@@ -191,6 +199,6 @@ async def help(ctx):
     
     await ctx.send(embed=embed)
     
-bot.run("token")
+bot.run("MTAxNjI3MDQ2MDc1NDg1Mzk2OQ.GE24Nb.WUYIBI7Ap7HSl13p8Yz80BGN1lr06WnlacN0BQ")
 
 # Token =
