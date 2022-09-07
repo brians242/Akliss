@@ -113,10 +113,7 @@ async def frame(ctx):
     try:
 
     # creating a folder named frames to store the frames of our video
-        if not os.path.exists("frames"):
-            os.mkdir("frames")
-        else:
-            return
+        os.mkdir("frames")
 
     # if not created then raise error
     except OSError:
