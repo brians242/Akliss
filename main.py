@@ -83,10 +83,9 @@ async def frame(ctx):
     def get(limit):
         return limit.author == ctx.author and limit.channel == ctx.channel and limit.content.lower() in frame_limit
     
-    frame_limit = await bot.wait_for("limit", get = get)
+    frame_limit = await bot.wait_for("limit", get = get)"""
 
-    """
-    # above trying to get how many frames the user wants
+    # above trying to get how many frames the user wants, currently fixing
     
     await ctx.send("Pick jpg or png for what files your frames will be saved as!")
     
@@ -108,7 +107,7 @@ async def frame(ctx):
     else:
         await ctx.send("Sorry! At this time this filetype isn't supported.")
     
-    cap = cv.VideoCapture("path")
+    cap = cv.VideoCapture("video0.mov") #change this to where you store the vid, added sample video here.
     
     try:
 
@@ -117,13 +116,14 @@ async def frame(ctx):
 
     # if not created then raise error
     except OSError:
-        await ctx.send("You failed to create a folder to contain the frames")
+        await ctx.send("You failed to create a folder to contain the frames/ You already have a folder named frames/your path isn't valid")
     
     curr_frame = 0
     #will later make this user modifiable
     
-    while (True):
-        ret, frame = cap.read #Non-iterable, object fix this later
+    ret, frame = cap.read()
+    
+    while (ret):
         
         if ret and curr_frame < {frame_limit}:
             name = "./frames/frame_" + str(curr_frame) + (f".{x_file_type}")
@@ -131,8 +131,14 @@ async def frame(ctx):
             cv.imwrite(name, frame)
             
             curr_frame += 1
-        else:
+        elif {frame_limit} <= curr_frame:
             break
+        else:
+            await ctx.send("Sorry, there was an error!")
+            exit()
+    
+        cap.release()
+        cv.destroyAllWindows()
     
     await ctx.send("Your frames have been processed!")
     
