@@ -114,7 +114,9 @@ async def frame(ctx):
     else:
         await ctx.send("Sorry! At this time this filetype isn't supported.")
     
-    cap = cv.VideoCapture("video0.mov") #change this to where you store the vid, added sample video here.
+    await ctx.send("Choose a video file to upload") #in-progress
+    
+    cap = cv.VideoCapture("video0.MOV") #change this to where you store the vid, added sample video here, figuring out how to read this 
     
     try:
 
