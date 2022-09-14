@@ -13,6 +13,7 @@ intents.message_content = True
 counter = 0
 file_type = ""
 frame_limit = []
+default_pref = ";"
 
 def get_prefix(bot, message):
     global counter
@@ -20,7 +21,13 @@ def get_prefix(bot, message):
         prefixes = json.load(i)
     
     counter += 1
-    return prefixes[str(message.guild.id)]
+    if str(message.guild.id) in prefixes:
+        return prefixes[str(message.guild.id)]
+    else:
+        prefixes[str(message.guild.id)] = default_pref
+        with open('prefixes.json', 'w') as i:
+            json.dump(prefixes, i, indent=4)
+        return default_pref
 
 bot = commands.Bot(command_prefix = get_prefix, case_sensitive = True, description = description, intents = intents, help_command = None)
 
