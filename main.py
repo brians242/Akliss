@@ -76,95 +76,14 @@ async def change_prefix(ctx, prefix):
     await ctx.send(f"your current server prefix is: {prefix}")
 
 @bot.command()
-async def filetype_reset(ctx):
-    global file_type
-    await ctx.send(f"Your file type: {file_type}, has now been reset!")
-    file_type = ""
-
-@bot.command()
 async def frame(ctx):
     
-    global frame_limit
-    """await ctx.send("Choose how many frames of video you want to create!")
-    
-    def get(limit):
-        return limit.author == ctx.author and limit.channel == ctx.channel and limit.content.lower() in frame_limit
-    
-    frame_limit = await bot.wait_for("limit", get = get)"""
-
-    # above trying to get how many frames the user wants, currently fixing
-    
-    await ctx.send("Pick jpg or png for what files your frames will be saved as!")
-    
-    def check(message):
-        return message.author == ctx.author and message.channel == ctx.channel and message.content.lower() in ["jpg", "png"]
-    
-    global file_type
-    
-    filetype = await bot.wait_for("message", check = check)
-    
-    global x_file_type
-    
-    if filetype.content.lower() == "jpg":
-        await ctx.send("Your frame(s) will be saved as a jpg(s)!")
-        x_file_type = str(file_type)
-    elif filetype.content.lower() == "png":
-        await ctx.send("Your frame(s) will be saved as a png(s)")
-        x_file_type = str(file_type)
-    else:
-        await ctx.send("Sorry! At this time this filetype isn't supported.")
-    
-    await ctx.send("Choose a video file to upload") #in-progress
-    
-    cap = cv.VideoCapture("video0.MOV") #change this to where you store the vid, added sample video here, figuring out how to read this 
-    
-    try:
-
-    # creating a folder named frames to store the frames of our video
-        os.mkdir("frames")
-
-    # if not created then raise error
-    except OSError:
-        await ctx.send("You failed to create a folder to contain the frames/ You already have a folder named frames/your path isn't valid")
-    
-    curr_frame = 0
-    #will later make this user modifiable
-    
-    ret, frame = cap.read()
-    
-    while (ret):
-        
-        if ret and curr_frame < {frame_limit}:
-            name = "./frames/frame_" + str(curr_frame) + (f".{x_file_type}")
-            
-            cv.imwrite(name, frame)
-            
-            curr_frame += 1
-        elif {frame_limit} <= curr_frame:
-            break
-        else:
-            await ctx.send("Sorry, there was an error!")
-            exit()
-    
-        cap.release()
-        cv.destroyAllWindows()
-    
-    await ctx.send("Your frames have been processed!")
-    
-    i_file = []
-    
-    """
-    while (True):
-        for i in os.listdir("path"):
-            if i.endswith(".jpg") or i.endswith("png"):
-                i_file.append(i)
-        for i in i_file:
-            await ctx.send(file = discord.File(i))
-    
-    await ctx.send("Your frames were sent!")
-    """
-            # above trying to send a folder
-    
+    count = 0
+    path = (f"insert path here/Akliss/images/frame{count}.jpg")
+    for i in path:
+        with open(path, "rb") as f:
+            picture = discord.File(f)
+            await ctx.send(file=picture)
     
 @bot.command()
 async def ping(ctx):
@@ -201,7 +120,7 @@ async def roll(ctx, dice):
 async def help(ctx):
     embed = discord.Embed(
         title = "Help",
-        description = "These are all the commands that this bot has: \n\nframe: the main function of the bot, takes your video and splits it into frames and gives you all the frames back. \n\nhelp: returns all of the commands and what they do. \n\ncheck_prefix: checks the prefix value (default should be ;), you've found it when it responds with: your current prefix is (your prefix. \n\nchange_prefix: changes the prefix to use the bot with. \n\nping: returns the ping to the server. \n\nusage: returns how many times you've used any bot commands (including help and usage). \n\nusage_reset: resets the usage command. \n\nroll: rolls a NdN dice and gives a random roll result.",
+        description = "These are all the commands that this bot has: \n\nframe: the main function of the bot, takes your video that you inserted and splits it into frames and gives you all the frames back. \n\nhelp: returns all of the commands and what they do. \n\ncheck_prefix: checks the prefix value (default should be ;), you've found it when it responds with: your current prefix is (your prefix. \n\nchange_prefix: changes the prefix to use the bot with. \n\nping: returns the ping to the server. \n\nusage: returns how many times you've used any bot commands (including help and usage). \n\nusage_reset: resets the usage command. \n\nroll: rolls a NdN dice and gives a random roll result.",
         color = discord.Color.blue()     
     )
     embed.set_image(url="https://echamicrobiology.com/app/uploads/2016/05/question-mark-character.jpg")
@@ -214,6 +133,4 @@ async def help(ctx):
     
     await ctx.send(embed=embed)
     
-bot.run("token")
-
-# Token =
+bot.run("enter token here")
