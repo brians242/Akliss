@@ -79,11 +79,12 @@ async def change_prefix(ctx, prefix):
 async def frame(ctx):
     
     count = 0
-    path = (f"insert path here/Akliss/images/frame{count}.jpg")
+    path = (f"your directory/Akliss/images/")
     for i in path:
-        with open(path, "rb") as f:
+        with open(path + f"frame{count}.jpg", "rb") as f:
             picture = discord.File(f)
             await ctx.send(file=picture)
+            count += 1
     
 @bot.command()
 async def ping(ctx):
@@ -133,4 +134,4 @@ async def help(ctx):
     
     await ctx.send(embed=embed)
     
-bot.run("enter token here")
+bot.run("insert token")

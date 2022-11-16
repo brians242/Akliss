@@ -15,4 +15,3 @@ First public version of a bot made by me.
 https://youtu.be/XKQWxAaRgG0, Discord.py official documentation, Discord.py template (https://github.com/Rapptz/discord.py/blob/master/examples/basic_bot.py)
 
 STATUS: FINISHED, could have some improvements
-

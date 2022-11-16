@@ -9,7 +9,7 @@ def main(video):
     while ret: 
 
         ret, frame = vid.read() 
-        path = "enter pwd into your terminal, should end with /Akliss/images and replace this"
+        path = "your directory up to this point/Akliss/images"
         cv.imwrite(str(path) + "/frame%d.jpg" % count, frame)
         type(frame)
         count += 1
